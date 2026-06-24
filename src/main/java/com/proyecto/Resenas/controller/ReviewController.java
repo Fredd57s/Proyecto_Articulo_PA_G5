@@ -28,7 +28,6 @@ public class ReviewController {
     @PostMapping("/api/analyze")
     @ResponseBody
     public Mono<Review> analyzeReviewAPI(@RequestBody String text) {
-        // Retornamos el Mono directamente. Netty lo manejará en su Event Loop.
         return reviewService.analyzeAndSave(text);
     }
 
@@ -39,6 +38,6 @@ public class ReviewController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login"; // Llama al archivo login.html
+        return "login";
     }
 }

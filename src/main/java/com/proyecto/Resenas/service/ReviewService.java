@@ -1,6 +1,5 @@
 package com.proyecto.Resenas.service;
 
-import com.proyecto.Resenas.dto.AnalysisResponse;
 import com.proyecto.Resenas.model.Review;
 import com.proyecto.Resenas.repository.ReviewRepository;
 import dev.langchain4j.model.chat.ChatLanguageModel;
@@ -23,18 +22,15 @@ public class ReviewService {
 
     public Mono<Review> analyzeAndSave(String reviewText) {
 
-        // 1. Llamamos a Gemini (Envuelto en fromCallable y boundedElastic para NO bloquear Netty)
         return Mono.fromCallable(() -> agent.analyzeReview(reviewText))
-                .subscribeOn(Schedulers.boundedElastic()) // <- ¡El secreto para integrar APIs bloqueantes!
+                .subscribeOn(Schedulers.boundedElastic())
                 .flatMap(response -> {
-                    // 2. Creamos la entidad con la respuesta REAL de la IA
                     Review review = new Review();
                     review.setText(reviewText);
                     review.setAuthorType(response.authorType());
                     review.setSentiment(response.sentiment());
                     review.setAnalysisJustification(response.justification());
 
-                    // 3. Guardamos en la base de datos de forma asíncrona
                     return repository.save(review);
                 });
     }
