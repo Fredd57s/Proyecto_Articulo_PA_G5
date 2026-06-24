@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Filtro de Reseñas IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 p-8 font-sans">
+
+<div class="max-w-5xl mx-auto">
+    <h1 class="text-4xl font-bold text-indigo-600 mb-2">Filtro de Reseñas 🤖</h1>
+    <p class="text-slate-500 mb-8">Detector de bots y análisis de sentimiento con Gemini.</p>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
+        <textarea id="reviewText" rows="4" class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-400 focus:outline-none mb-4" placeholder="Pega la reseña aquí..."></textarea>
+        <button onclick="analyze()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded-xl transition-all">
+            Analizar Reseña
+        </button>
+        <p id="loadingMessage" class="hidden text-indigo-500 mt-2 font-medium animate-pulse">Procesando con IA...</p>
+    </div>
+
+    <h2 class="text-2xl font-bold text-slate-700 mb-4">Historial de Análisis</h2>
+    <div class="grid gap-4">
+        <div th:each="review : ${reviews}" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-3">
+
+            <div class="flex items-center gap-3">
+                <span th:text="${review.authorType}" th:classappend="${review.authorType == 'IA'} ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'" class="px-3 py-1 rounded-full text-sm font-bold"></span>
+                <span th:text="${review.sentiment}" th:classappend="${review.sentiment == 'Positivo'} ? 'text-green-600' : (${review.sentiment == 'Negativo'} ? 'text-red-600' : 'text-slate-500')" class="font-semibold text-sm"></span>
+                <span th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}" class="text-xs text-slate-400 ml-auto"></span>
+            </div>
+
+            <p th:text="${review.text}" class="text-slate-700 italic border-l-4 border-indigo-200 pl-3"></p>
+
+            <div class="bg-slate-50 p-3 rounded-xl">
+                <p class="text-sm font-semibold text-slate-600">Justificación de la IA:</p>
+                <p th:text="${review.analysisJustification}" class="text-sm text-slate-500"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function analyze() {
+        const text = document.getElementById('reviewText').value;
+        if(!text) return alert("Ingresa una reseña");
+
+        document.getElementById('loadingMessage').classList.remove('hidden');
+
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            body: text
+        });
+
+        if(response.ok) {
+            window.location.reload(); // Recarga la página para mostrar la nueva reseña
+        } else {
+            alert("Error al analizar");
+            document.getElementById('loadingMessage').classList.add('hidden');
+        }
+    }
+</script>
+</body>
+</html>

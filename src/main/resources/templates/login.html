@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Filtro de Reseñas</title>
+    <style>
+        body {
+            /* Mismo fondo claro de tu dashboard */
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #1e293b;
+        }
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            /* Sombra suave igual a la de tus tarjetas de historial */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+        h1 {
+            /* Mismo morado/azul de tu título principal */
+            color: #6366f1;
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .input-group {
+            text-align: left;
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #475569;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            /* Resplandor azul al hacer clic */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            /* Color del botón "Analizar Reseña" */
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #4f46e5; /* Más oscuro al pasar el mouse */
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            background-color: #fef2f2;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h1>Filtro de Reseñas </h1>
+    <p>Inicia sesión para acceder al analizador</p>
+
+    <div th:if="${param.error != null}" class="error-msg">
+        Usuario o contraseña incorrectos.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="input-group">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" placeholder="Ej. admin" required autofocus>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+        </div>
+
+        <button type="submit">Acceder</button>
+    </form>
+</div>
+
+</body>
+</html>
