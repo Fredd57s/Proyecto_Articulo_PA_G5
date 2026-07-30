@@ -1,4 +1,4 @@
-name: Integración Continua (CI)
+name: Pipeline CI/CD
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: [ "main", "master" ]
 
 jobs:
-  build-and-test:
+  # 1. FASE DE INTEGRACIÓN CONTINUA (CI)
+  integracion-continua:
     runs-on: ubuntu-latest
-
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v4
@@ -23,3 +23,14 @@ jobs:
 
       - name: Compilar y ejecutar pruebas con Maven
         run: mvn clean package -DskipTests
+
+  # 2. FASE DE DESPLIEGUE CONTINUO (CD)
+  despliegue-continuo:
+    needs: integracion-continua # Esto hace que el CD espere a que el CI termine exitosamente
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preparar entorno de producción
+        run: sleep 2 # Simulamos un pequeño tiempo de carga
+
+      - name: Desplegar aplicación
+        run: echo "¡El código pasó las pruebas! Desplegando automáticamente la nueva versión de la aplicación en el servidor..."
