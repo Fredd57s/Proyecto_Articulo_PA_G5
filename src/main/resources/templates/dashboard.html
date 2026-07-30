@@ -46,15 +46,27 @@
 
         document.getElementById('loadingMessage').classList.remove('hidden');
 
-        const response = await fetch('/api/analyze', {
-            method: 'POST',
-            body: text
-        });
+        try {
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain' // <- Esta es la línea mágica
+                },
+                body: text
+            });
 
-        if(response.ok) {
-            window.location.reload(); // Recarga la página para mostrar la nueva reseña
-        } else {
-            alert("Error al analizar");
+            if(response.ok) {
+                window.location.reload();
+            } else {
+                // Si falla, leemos lo que el servidor (o el GlobalExceptionHandler) nos está respondiendo
+                const errorText = await response.text();
+                console.error("Error del servidor:", errorText);
+                alert("Error HTTP " + response.status + ". Revisa la consola (F12) para más detalles.");
+                document.getElementById('loadingMessage').classList.add('hidden');
+            }
+        } catch (error) {
+            console.error("Error de red o CORS:", error);
+            alert("Ocurrió un error al intentar conectar con el servidor.");
             document.getElementById('loadingMessage').classList.add('hidden');
         }
     }

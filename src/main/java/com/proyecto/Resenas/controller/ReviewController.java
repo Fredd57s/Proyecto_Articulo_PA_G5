@@ -16,10 +16,14 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    // NUEVO MÉTODO AÑADIDO: Atrapa la redirección del login
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/dashboard";
+    }
+
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
-        // En WebFlux, le pasamos el Flux directamente al modelo.
-        // Thymeleaf está adaptado para suscribirse automáticamente sin bloquear.
         model.addAttribute("reviews", reviewService.getAllHistory());
         return "dashboard";
     }
