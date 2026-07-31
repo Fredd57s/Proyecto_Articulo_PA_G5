@@ -1,4 +1,66 @@
-﻿**INSTRUCCIONES DE EJECUCION - PROYECTO B (ARQUITECTURA REACTIVA WEBFLUX)**
+**FILTRO DE RESEÑA IA**
+
+Aplicación web reactiva desarrollada con Spring Boot WebFlux y Java 23. Este sistema integra el modelo de lenguaje de Google Gemini (a través de LangChain4j) para realizar análisis de sentimiento y detección de bots en reseñas de usuarios de forma automatizada y no bloqueante.
+
+**TECNOLOGÍAS Y ARQUITECTURA**
+
+El proyecto está construido bajo una arquitectura reactiva, garantizando alta concurrencia y tiempos de respuesta óptimos:
+
+- Backend: Java 23, Spring Boot (WebFlux).
+- Seguridad: Spring Security (Protección de rutas y autenticación).
+- Persistencia: Spring Data R2DBC (Acceso a base de datos reactiva).
+- Inteligencia Artificial: LangChain4j con Google Gemini API.
+- Frontend: HTML5, Thymeleaf y Tailwind CSS.
+- Testing: JUnit 5, WebTestClient, Mockito (TDD).
+- CI/CD: GitHub Actions.
+
+**REQUISITOS PREVIOS**
+
+Antes de ejecutar el proyecto localmente, asegúrate de tener instalado:
+
+- Java Development Kit (JDK) 23
+- Apache Maven
+- Una clave de API válida de Google AI Studio.
+
+**INSTALACIÓN Y CONFIGURACIÓN**
+
+1. Clonar el repositorio Abre tu terminal y ejecuta: git clone [https://github.com/tu-usuario/ResenasReactiveGem.git](https://www.google.com/search?q=https://github.com/tu-usuario/ResenasReactiveGem.git) cd ResenasReactiveGem
+1. Configurar la API Key de Gemini Navega hasta el archivo de propiedades ubicado en src/main/resources/application.properties y configura tu clave de acceso reemplazando el texto de ejemplo: gemini.api.key=TU\_CLAVE\_API\_DE\_GEMINI\_AQUI langchain4j.googleai.gemini.api-key=TU\_CLAVE\_API\_DE\_GEMINI\_AQUI
+1. Compilar e instalar dependencias En la raíz del proyecto, ejecuta: mvn clean install
+
+**EJECUCIÓN DEL PROYECTO**
+
+Para levantar el servidor localmente, ejecuta el siguiente comando: mvn spring-boot:run
+
+Una vez que la consola indique que el servidor Netty ha iniciado, la aplicación estará disponible en: http://localhost:8080
+
+Nota: La ruta principal redirigirá automáticamente al sistema de inicio de sesión (/login) configurado por Spring Security.
+
+**PRUEBAS (TESTING)**
+
+El proyecto fue desarrollado aplicando la metodología Test-Driven Development (TDD) con el ciclo Red-Green-Refactor. Cuenta con una batería de pruebas unitarias y de integración que validan:
+
+- Inyección de dependencias mediante MockBean (evitando consumo de cuota de la API en pruebas).
+- Reglas de enrutamiento y filtros de Spring Security.
+- Manejo de excepciones globales y validación de formatos HTTP.
+
+Para ejecutar la batería de pruebas automatizadas: mvn test
+
+**INTEGRACIÓN CONTINUA (CI/CD)**
+
+El repositorio cuenta con un pipeline configurado en GitHub Actions (ci.yml). Cada vez que se realiza un push o se abre un Pull Request hacia la rama main, un entorno virtual clona el código y ejecuta automáticamente los tests (mvn clean test) para garantizar que las nuevas integraciones no rompan las funcionalidades existentes.
+
+**AUTORES** 
+
+Desarrollado como proyecto académico de ingeniería por Freddy Jiménez y Edith Chuico.
+
+
+ 
+**LO QUE ESTÁ ACÁ ABAJO ES EL README ANTERIOR**
+
+ 
+ 
+ **INSTRUCCIONES DE EJECUCION - PROYECTO B (ARQUITECTURA REACTIVA WEBFLUX)**
 
 **GRUPO 5**
 
@@ -41,4 +103,6 @@ PASO 5: EJECUCION DE PRUEBAS DE ESTRÉS
 1. En el "Thread Group", configure el numero de usuarios (Number of Threads) a 100 o 500.
 1. Asegúrese de que la petición HTTP apunte al método POST en la ruta /api/analyze.
 1. Ejecuta la prueba (botón Play) y observa los resultados en tiempo real en los módulos "View Results Tree" y "Summary Report".
+
+
 
